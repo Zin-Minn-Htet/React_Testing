@@ -1,6 +1,11 @@
 import React from "react";
 
 function User (props) {
+
+    let userHendle = () => {
+       props.remove(props.data.uuid)
+    }
+
     return (
         <div className="card mb-3">
         <div className="row">
@@ -18,7 +23,7 @@ function User (props) {
             </strong>
         </div>
         <div className="col-2">
-        <button className="btn btn-danger btn-sm mt-2">
+        <button className="btn btn-danger btn-sm mt-2" onClick={userHendle} >
         <i className="fa-solid fa-trash"></i>
         </button>
         </div>
