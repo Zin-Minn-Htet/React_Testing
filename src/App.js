@@ -1,9 +1,11 @@
 import React, { useEffect, useState} from "react";
 import User from "./components/user/user";
+import Adduser from "./components/user/Adduser";
 
 function App() {
 
   let [user, setUser] = useState([]);
+  let [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     fetch("https://randomuser.me/api/?results=10")
@@ -29,10 +31,21 @@ function App() {
    let remainUser = user.filter(usr => usr.uuid != uuid);
    setUser(remainUser)
   }
+  const showFormHandler = () => {
+    setShowForm(!showForm)
+  }
+
+  const addNewUser = (use) => {
+    let newUser = [use, ...user]
+    setUser(newUser)
+    setShowForm(!showForm)
+  }
 
   return (
       <div className="container my-5">
         <h1 className="text-center text-info" >Our Employee</h1>
+        <button className="btn btn-primary btn-sm my-2" onClick={showFormHandler}>Add User</button>
+        {showForm && <Adduser addUser= {addNewUser} />}
         {
           user.map(usr => <User key={usr.uuid} data={usr} remove={userControl} />)
         }
