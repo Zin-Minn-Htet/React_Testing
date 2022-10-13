@@ -1,56 +1,32 @@
-import React, { useEffect, useState} from "react";
-import User from "./components/user/user";
-import Adduser from "./components/user/Adduser";
+import React, { useEffect, useState } from "react";
+import AddPost from "./components/AddPost";
+import Post from "./components/Post";
 
 function App() {
+  const DB_NAME = "PostDB";
 
-  let [user, setUser] = useState([]);
-  let [showForm, setShowForm] = useState(false);
+  let [posts, setPosts] = useState([]);
+
+  const addPosts = (post) => {
+    setPosts([post, ...posts])
+  }
 
   useEffect(() => {
-    fetch("https://randomuser.me/api/?results=10")
-    .then(res => res.json())
-    .then(users => {
-      let dusers = users.results;
-      let filteredUser = dusers.map(u => {
-        return {
-          uuid: u.login.uuid,
-          phone: u.phone,
-          cell: u.cell,
-          name: `${u.name.title} ${u.name.first} ${u.name.last}`,
-          image: u.picture.thumbnail
-        }
-      })
-      setUser(filteredUser)
-    })
-    .catch(err => console.log(err));
+    let data = localStorage.getItem(DB_NAME);
+    if (data) setPosts(JSON.parse(data));
+  }, []);
 
-  },[])
-
-  const userControl = (uuid) => {
-   let remainUser = user.filter(usr => usr.uuid != uuid);
-   setUser(remainUser)
-  }
-  const showFormHandler = () => {
-    setShowForm(!showForm)
-  }
-
-  const addNewUser = (use) => {
-    let newUser = [use, ...user]
-    setUser(newUser)
-    setShowForm(!showForm)
-  }
+  useEffect(() => {
+    localStorage.setItem(DB_NAME, JSON.stringify(posts))
+  }, [posts]);
 
   return (
-      <div className="container my-5">
-        <h1 className="text-center text-info" >Our Employee</h1>
-        <button className="btn btn-primary btn-sm my-2" onClick={showFormHandler}>Add User</button>
-        {showForm && <Adduser addUser= {addNewUser} />}
-        {
-          user.map(usr => <User key={usr.uuid} data={usr} remove={userControl} />)
-        }
-      </div>
-  );
+    <div>
+      <h2 className="text-center text-info">Posts</h2>
+      <Post posts={posts} />
+      <AddPost addPost={addPosts} />
+    </div>
+  )
 }
 
 export default App;
