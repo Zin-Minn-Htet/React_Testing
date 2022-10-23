@@ -15,3 +15,10 @@ export const logout = (con) => {
         })
     }
 }
+
+const actionCreator = {
+    login,
+    logout
+}
+
+export default actionCreator;

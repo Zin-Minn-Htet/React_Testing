@@ -1,7 +1,7 @@
 import React from "react";
 import {useSelector,useDispatch} from 'react-redux';
 import { bindActionCreators } from "redux";
-import { actionCreator } from "./stores/actionCreator";
+import actionCreator from "./stores/actions";
 
 
 
