@@ -1,8 +1,5 @@
-import { configureStore } from "@reduxjs/toolkit";
-import loginReducer from "./loginReducer";
+import {applyMiddleware, createStore} from 'redux'
+import thunk from 'redux-thunk'
+import reducer from './reducer'
 
-export const store = configureStore({
-    reducer:{
-        login : loginReducer
-    }
-})
+export const store = createStore(reducer,{},applyMiddleware(thunk));
